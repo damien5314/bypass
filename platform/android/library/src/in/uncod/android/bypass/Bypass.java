@@ -258,7 +258,7 @@ public class Bypass {
 			case LINK:
 			case AUTOLINK:
 				String link = element.getAttribute("link");
-				if (Patterns.EMAIL_ADDRESS.matcher(link).matches()) {
+				if (!TextUtils.isEmpty(link) && Patterns.EMAIL_ADDRESS.matcher(link).matches()) {
 					link = "mailto:" + link;
 				}
 				setSpan(builder, new URLSpan(link));
@@ -293,7 +293,8 @@ public class Bypass {
 
 	// These have trailing newlines that we want to avoid spanning
 	private static void setBlockSpan(SpannableStringBuilder builder, Object what) {
-		builder.setSpan(what, 0, builder.length() - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		int length = Math.max(0, builder.length() - 1);
+		builder.setSpan(what, 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	}
 
 	/**
